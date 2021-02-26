@@ -1,2 +1,41 @@
 <h1>Pages#home</h1>
 <p>Find me in app/views/pages/home.html.erb</p>
+
+<div id="mapid" style="height: 700px"></div>
+
+<script type="text/javascript" charset="utf-8">
+
+    var googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3']
+    });
+    var googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3']
+    });
+
+    var mymap = L.map('mapid',{
+        center:[41.6, 74.888],
+        zoom: 7,
+        layers:[googleHybrid, googleStreets]
+    });
+
+    var baseMaps = {
+        "Hybrid": googleHybrid,
+        "Streets": googleStreets
+    };
+
+    L.control.layers(baseMaps).addTo(mymap);
+
+    var popup = L.popup();
+
+    function onMapClick(e) {
+        popup
+            .setLatLng(e.latlng)
+            .setContent("You clicked the map at " + e.latlng.toString() + "<button>Hello</button>")
+            .openOn(mymap);
+    }
+
+    mymap.on('click', onMapClick);
+
+</script>
